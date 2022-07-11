@@ -132,7 +132,20 @@ function transformStr2Hump3(str) {
  * /g 匹配完第一次后，继续匹配剩下的
  */
 function toThousands1(number) {
-  return (number + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+  if (!Number(number)) {
+    console.error('这不是个数字');
+    return number;
+  }
+  const intPart = Math.trunc(number);
+  let fracPart = '';
+  if (number - intPart > 0) {
+    fracPart = `${number}`.split('.')[1];
+  }
+  let res = `${intPart}`.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+  if (fracPart) {
+    res = `${res}.${fracPart}`;
+  }
+  return res;
 }
 
 function toThousands2(number) {
